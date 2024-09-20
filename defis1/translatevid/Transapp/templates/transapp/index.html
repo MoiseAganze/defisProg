@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <section>
+      <video controls>
+        <source src="{% static 'videos/fally.mp4' %}" type="video/mp4" />
+      </video>
+      <select name="langues" id="langues" onchange="sendVideo(event)">
+        <option value="fr">Français</option>
+        <option value="en">anglais</option>
+        <option value="jp">japonais</option>
+      </select>
+    </section>
+
+    <script>
+      function sendVideo(event) {
+        const lagnueChosie = event.target.value;
+        fetch("http://127.0.0.1:8000/translate/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ langue: lagnueChosie }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            alert(res.message);
+          });
+      }
+    </script>
+  </body>
+</html>
